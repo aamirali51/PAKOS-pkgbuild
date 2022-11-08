@@ -1,12 +1,12 @@
 # Maintainer: Erik Dubois <erik.dubois@gmail.com>
-pkgname=PakOs-calamares-config
-_destname1="/etc"
+pkgname=calamares-desktop-installation
+_destname1="/etc/skel/Desktop"
 _destname2="/etc"
 _destname3="/etc"
 _destname4="/etc"
-pkgver=22.07	
-pkgrel=10
-pkgdesc="calamares for Pakos"
+pkgver=22.07
+pkgrel=1
+pkgdesc="calamares Desktop Icon"
 arch=('any')
 url="https://github.com/aamirali51"
 license=('GPL3')
