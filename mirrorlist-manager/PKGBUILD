@@ -9,7 +9,7 @@ url="https://github.com/aamirali51/Pakos-Mirrorlist-Manager"
 license=('GPL3')
 depends=('python>=3.7.0' 'python-pyqt5>=5.11.2' 'python-pandas>=0.23.4' 'pacman-contrib')
 makedepends=('cython>=0.28.5')
-source=(Mirrorlist-Manager.tar.gz::"https://github.com/aamirali51/Pakos-Mirrorlist-Manager/archive/v${pkgver}.tar.gz"
+source=(Pakos-Mirrorlist-Manager::"https://github.com/aamirali51/Pakos-Mirrorlist-Manager"
   "mirrorist-manager.desktop.in" "setup.py")
 
 build(){
