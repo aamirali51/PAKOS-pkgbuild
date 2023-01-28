@@ -9,13 +9,6 @@ url="https://github.com/aamirali51/Pakos-Mirrorlist-Manager"
 license=('GPL3')
 depends=('python>=3.7.0' 'python-pyqt5>=5.11.2' 'python-pandas>=0.23.4' 'pacman-contrib')
 makedepends=('cython>=0.28.5')
-source=(Pakos-Mirrorlist-Manager::"https://github.com/aamirali51/Pakos-Mirrorlist-Manager"
-  "mirrorist-manager.desktop.in" "setup.py")
-
-ha256sums=('04b0872f6e993c0e8c64d0ea96dde17165b771aad89071ce00fed0ba82e25f27'
-            '9f1a7239f2558cbe52adac978a3daa411a7868397585b41d51669c7ca2546751'
-            '193fa480b680b2f5fc531aed6c533f427a0a6167b39526fd66855e780163d18e')
-
 build(){
 	cd ${srcdir}/ArchLinux-Mirrorlist-Manager-*
 	python3 ../setup.py build_ext --inplace
@@ -36,3 +29,4 @@ package() {
   ln -sv launcher.py mirrorlist-manager
   ln -sv ../../usr/lib/mirrorlist-manager/launcher.py ${pkgdir}/usr/bin/mirrorlist-manager
 }
+
