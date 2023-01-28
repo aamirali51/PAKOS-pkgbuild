@@ -4,6 +4,6 @@ Type=Application
 Categories=Utility
 Terminal=false
 Exec=mirrorlist-manager
-Name=Mirrorlist Manager
+Name=PAKOS Mirrorlist Manager
 Icon=mirrorlist-manager
 Comment=A Qt frontend for easy mirrorlist management
