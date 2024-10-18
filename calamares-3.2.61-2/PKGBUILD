@@ -1,29 +1,38 @@
-# Maintainer: Philip Müller <philm[at]manjaro[dog]org>
+#Calamares PKGBUILD for Arch Linux GUI
 
 pkgname=calamares
-pkgver=3.2.61
-pkgrel=2
+pkgver=3.3.7
+pkgrel=3
 pkgdesc='Distribution-independent installer framework'
-arch=('i686' 'x86_64')
+arch=('x86_64')
 license=(GPL)
 url="https://github.com/calamares/calamares/releases/download"
 license=('LGPL')
 depends=('kconfig' 'kcoreaddons' 'kiconthemes' 'ki18n' 'kio' 'solid' 'yaml-cpp' 'kpmcore' 'mkinitcpio-openswap'
-         'boost-libs' 'ckbcomp' 'hwinfo' 'qt5-svg' 'polkit-qt5' 'gtk-update-icon-cache' 'plasma-framework'
-         'qt5-xmlpatterns' 'squashfs-tools' 'libpwquality') # 'pythonqt>=3.2')
-makedepends=('extra-cmake-modules' 'qt5-tools' 'qt5-translations' 'git' 'boost')
+		 'ckbcomp' 'hwinfo' 'qt6-svg' 'polkit-qt6' 'gtk-update-icon-cache'
+		 'squashfs-tools' 'libpwquality' 'pybind11' 'python')
+		 #'boost-libs' 'pythonqt>=3.2')  'boost' #'plasma-framework5') #'qt5-xmlpatterns')
+makedepends=('extra-cmake-modules' 'qt6-tools' 'qt6-translations' 'git' 'boost')
 backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/displaymanager.conf'
         'usr/share/calamares/modules/initcpio.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
 source=("$pkgname-$pkgver-$pkgrel.tar.gz::$url/v$pkgver/calamares-$pkgver.tar.gz")
-sha256sums=('7591b9b60738bdba7b9de2b8da5462ab21006db06a006f0dd21ac5b832711dd2')
+sha256sums=('56589968f2447a2e79da67079602dabc77504bc0f8233b5e655a1a4d57007a34')
 
 prepare() {
 	cd ${srcdir}/calamares-${pkgver}
 	sed -i -e 's/"Install configuration files" OFF/"Install configuration files" ON/' CMakeLists.txt
-	sed -i -e 's/etc\/sddm.conf/etc\/sddm.conf.d\/kde_settings.conf/' src/modules/displaymanager/main.py
+	sed -i -e 's/# DEBUG_FILESYSTEMS/DEBUG_FILESYSTEMS/' "$srcdir/${pkgname}-${pkgver}/CMakeLists.txt"
+
+	# modify desktop file
+	sed -i -e 's#Exec=sh.*#Exec=sh -c "/etc/calamares/launch.sh"#g' "$srcdir/${pkgname}-${pkgver}/calamares.desktop"
+	sed -i -e 's#Name=.*#Name=Install Arch Linux#g' "$srcdir/${pkgname}-${pkgver}/calamares.desktop"
+	sed -i -e 's#GenericName=.*#GenericName=Arch Linux Installer#g' "$srcdir/${pkgname}-${pkgver}/calamares.desktop"
+	sed -i -e 's#Icon=.*#Icon=archlinux-logo#g' "$srcdir/${pkgname}-${pkgver}/calamares.desktop"
+	sed -i -e 's#Comment=.*#Comment=Arch Linux Installer#g' "$srcdir/${pkgname}-${pkgver}/calamares.desktop"
+
 
 	# patches here
 
@@ -46,6 +55,10 @@ build() {
               -DCMAKE_INSTALL_LIBDIR=lib \
               -DWITH_PYTHONQT:BOOL=ON \
               -DBoost_NO_BOOST_CMAKE=ON \
+              -DWITH_QT6=ON \
+              -DWITH_PYBIND11=ON \
+              -DWITH_APPSTREAM=OFF \
+              -DBUILD_TESTING=OFF \
               -DSKIP_MODULES="tracking webview interactiveterminal initramfs \
                               initramfscfg dracut dracutlukscfg \
                               dummyprocess dummypython dummycpp \
@@ -56,15 +69,5 @@ build() {
 package() {
 	cd ${srcdir}/calamares-${pkgver}/build
 	make DESTDIR="$pkgdir" install
-	#install -Dm644 "../data/manjaro-icon.svg" "$pkgdir/usr/share/icons/hicolor/scalable/apps/calamares.svg"
-	#install -Dm644 "../data/calamares.desktop" "$pkgdir/usr/share/applications/calamares.desktop"
-	#install -Dm755 "../data/calamares_polkit" "$pkgdir/usr/bin/calamares_polkit"
-	#install -Dm644 "../data/49-nopasswd-calamares.rules" "$pkgdir/etc/polkit-1/rules.d/49-nopasswd-calamares.rules"
-	#chmod 750      "$pkgdir"/etc/polkit-1/rules.d
 
-	# rename services-systemd back to services
-	#mv "$pkgdir/usr/lib/calamares/modules/services-systemd" "$pkgdir/usr/lib/calamares/modules/services"
-	#mv "$pkgdir/usr/share/calamares/modules/services-systemd.conf" "$pkgdir/usr/share/calamares/modules/services.conf"
-	#sed -i -e 's/-systemd//' "$pkgdir/usr/lib/calamares/modules/services/module.desc"
-	#sed -i -e 's/-systemd//' "$pkgdir/usr/share/calamares/settings.conf"
 }
