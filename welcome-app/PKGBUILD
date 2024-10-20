@@ -1,0 +1,39 @@
+# Maintainer: Your Name <your.email@example.com>
+pkgname=tth-welcome-app
+pkgver=1.0
+pkgrel=1
+pkgdesc="A simple welcome app for TTH-Linux with a button to launch Calamares"
+arch=('any')
+url="https://example.com/tth-linux"
+license=('GPL')
+depends=('python' 'python-pyqt5')
+source=('welcome.py')
+sha256sums=('SKIP')
+
+package() {
+    # Install the Python script
+    install -Dm755 "$srcdir/welcome.py" "$pkgdir/usr/local/bin/welcome.py"
+
+    # Install the .desktop file for the applications menu
+    install -Dm644 "$srcdir/welcome.desktop" "$pkgdir/usr/share/applications/welcome.desktop"
+
+    # Install the .desktop file for autostart
+    install -Dm644 "$srcdir/welcome.desktop" "$pkgdir/etc/xdg/autostart/welcome.desktop"
+
+    # Copy for live session user
+    install -Dm644 "$srcdir/welcome.desktop" "$pkgdir/etc/skel/.config/autostart/welcome.desktop"
+
+    }
+
+prepare() {
+    # Generate the welcome.desktop file
+    echo "[Desktop Entry]" > welcome.desktop
+    echo "Type=Application" >> welcome.desktop
+    echo "Name=Welcome to TTH-Linux" >> welcome.desktop
+    echo "Exec=/usr/bin/python3 /usr/local/bin/welcome.py" >> welcome.desktop
+    echo "X-GNOME-Autostart-enabled=true" >> welcome.desktop
+    echo "NoDisplay=false" >> welcome.desktop
+    echo "OnlyShowIn=KDE;" >> welcome.desktop  # Ensure autostart only in KDE Plasma
+    echo "Comment=A welcome application for TTH-Linux" >> welcome.desktop  # Optional comment
+    echo "Terminal=false" >> welcome.desktop  # Avoid running in a terminal
+}

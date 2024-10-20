@@ -1,7 +1,7 @@
 # Maintainer: DemonKiller
 pkgname=PakOs-calamares-config
 destname="/etc"
-pkgver=1.01
+pkgver=1.03
 pkgrel=1
 pkgdesc="Calamares config for Arch Linux GUI Themed Editions"
 arch=('any')
