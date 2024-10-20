@@ -1,0 +1,22 @@
+pkgname=plasma-mac-style
+pkgver=1.0
+pkgrel=1
+pkgdesc="A custom Plymouth theme"
+arch=('x86_64')
+license=('GPL')
+url="https://github.com/aamirali51"
+#depends=('plymouth')
+
+# Specify the source files from your GitHub repository
+#source=("git+https://github.com/aamirali51/plasma-mac-style.git")
+
+# Use the package() function to install the files
+package() {
+    cd "$srcdir/plasma-mac-style"  # Navigate to the cloned repository
+
+    mkdir -p "$pkgdir/usr/lib/plymouth/themes/mytheme"
+
+    install -Dm644 "mytheme.plymouth" "$pkgdir/usr/lib/plymouth/themes/mytheme/mytheme.plymouth"
+    install -Dm644 "mytheme.script" "$pkgdir/usr/lib/plymouth/themes/mytheme/mytheme.script"
+    # Add any other files similarly
+}

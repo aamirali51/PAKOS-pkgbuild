@@ -1,7 +1,7 @@
 #Calamares PKGBUILD for Arch Linux GUI
 
 pkgname=calamares
-pkgver=3.3.7
+pkgver=3.3.9
 pkgrel=3
 pkgdesc='Distribution-independent installer framework'
 arch=('x86_64')
@@ -19,7 +19,7 @@ backup=('usr/share/calamares/modules/bootloader.conf'
         'usr/share/calamares/modules/unpackfs.conf')
 
 source=("$pkgname-$pkgver-$pkgrel.tar.gz::$url/v$pkgver/calamares-$pkgver.tar.gz")
-sha256sums=('56589968f2447a2e79da67079602dabc77504bc0f8233b5e655a1a4d57007a34')
+sha256sums=('d8f70fa682ca732f448c7033e66c5d4f747161031f74f46778e20728ceff6b45')
 
 prepare() {
 	cd ${srcdir}/calamares-${pkgver}
