@@ -1,0 +1,44 @@
+# Maintainer: Your Name <your.email@example.com>
+pkgname=archpk-mirrorlist-manager
+pkgver=1.0.0.r0.g$(git rev-parse --short HEAD)
+pkgrel=1
+pkgdesc="A mirrorlist manager for Arch Linux with a graphical interface."
+arch=('any')
+url="https://github.com/aamirali51/ArchPK-Mirrorlist-Manager"
+license=('GPL3')
+depends=('python' 'python-pyqt5')
+makedepends=('git')
+source=("$pkgname::git+https://github.com/aamirali51/ArchPK-Mirrorlist-Manager.git")
+sha256sums=('SKIP')
+
+package() {
+    cd "$srcdir/$pkgname"  # Navigate into the cloned directory
+
+    # Create the necessary directories
+    install -dm755 "$pkgdir/usr/lib/$pkgname"
+    install -dm755 "$pkgdir/usr/share/icons/hicolor/256x256/apps/"
+    install -dm755 "$pkgdir/usr/share/applications/"
+    install -dm755 "$pkgdir/usr/share/doc/$pkgname/"
+
+    # Install all Python files and .ui files in the lib directory
+    install -Dm755 *.py "$pkgdir/usr/lib/$pkgname/"
+    install -Dm644 *.ui "$pkgdir/usr/lib/$pkgname/"
+
+    # Copy the country_code.data file to the appropriate directory
+    install -Dm644 country_code.data "$pkgdir/usr/lib/$pkgname/country_code.data"
+
+    # Install all icon files to the icon directory
+    install -Dm644 icon/* "$pkgdir/usr/share/icons/hicolor/256x256/apps/"
+
+    # Create and install the desktop entry
+    cat << EOF > "$pkgdir/usr/share/applications/$pkgname.desktop"
+[Desktop Entry]
+Name=ArchPK Mirrorlist Manager
+Exec=python3 /usr/lib/$pkgname/launcher.py
+Type=Application
+Categories=Utility;
+EOF
+
+    # Install the README file
+    install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+}
